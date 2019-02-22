@@ -4,6 +4,7 @@ import com.chamalwr.model.Student;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.cfg.Configuration;
+import java.util.List;
 
 public class CrudFunctions {
 
@@ -59,8 +60,83 @@ public class CrudFunctions {
                 sessionFactory.close();
             }
         }
-
         return null;
+    }
+
+
+    public List<Student> getStudents(){
+
+        List<Student> students;
+
+        try{
+            sessionFactory = new Configuration()
+                                .configure("hibernate.cfg.xml")
+                                .addAnnotatedClass(Student.class)
+                                .buildSessionFactory();
+
+
+            Session session = sessionFactory.getCurrentSession();
+            session.beginTransaction();
+
+            students = session.createQuery("from Student").getResultList();
+            session.getTransaction().commit();
+
+            return students;
+
+        }catch (Exception err){
+            err.printStackTrace();
+        }finally {
+            if(sessionFactory != null){
+                sessionFactory.close();
+            }
+        }
+        return null;
+    }
+
+    public List<Student> getStudentsByQuery(){
+
+        List<Student> students;
+
+        try{
+            sessionFactory = new Configuration()
+                             .configure("hibernate.cfg.xml")
+                             .addAnnotatedClass(Student.class)
+                             .buildSessionFactory();
+
+            Session session = sessionFactory.getCurrentSession();
+            session.beginTransaction();
+
+            students = session.createQuery("from Student std where std.email LIKE '%email.aus'").getResultList();
+            session.getTransaction().commit();
+            return students;
+
+        }catch (Exception err){
+            err.printStackTrace();
+        }finally {
+            if(sessionFactory != null){
+                sessionFactory.close();
+            }
+        }
+        return null;
+    }
+
+    public void updateStudent(int studentID, String email){
+        try{
+            sessionFactory = new Configuration()
+                    .configure("hibernate.cfg.xml")
+                    .addAnnotatedClass(Student.class)
+                    .buildSessionFactory();
+
+            Session session = sessionFactory.getCurrentSession();
+            session.beginTransaction();
+            Student student = session.get(Student.class, studentID);
+            student.setEmail(email);
+            session.getTransaction().commit();
+            System.out.println("Student Email updated to : " + email);
+
+        }catch (Exception err){
+            err.printStackTrace();
+        }
     }
 
 }
