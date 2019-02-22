@@ -4,6 +4,8 @@ import com.chamalwr.model.Student;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.cfg.Configuration;
+
+import javax.persistence.Query;
 import java.util.List;
 
 public class CrudFunctions {
@@ -12,12 +14,12 @@ public class CrudFunctions {
 
     public void saveStudent(Student... students){
 
-        try{
-             sessionFactory = new Configuration()
-                     .configure("hibernate.cfg.xml")
-                     .addAnnotatedClass(Student.class)
-                     .buildSessionFactory();
 
+        try{
+            sessionFactory = new Configuration()
+                    .configure("hibernate.cfg.xml")
+                    .addAnnotatedClass(Student.class)
+                    .buildSessionFactory();
 
             Session session = sessionFactory.getCurrentSession();
 
@@ -41,10 +43,9 @@ public class CrudFunctions {
     public Student getStudent(int studentId){
         try{
             sessionFactory = new Configuration()
-                                 .configure("hibernate.cfg.xml")
-                                 .addAnnotatedClass(Student.class)
-                                  .buildSessionFactory();
-
+                    .configure("hibernate.cfg.xml")
+                    .addAnnotatedClass(Student.class)
+                    .buildSessionFactory();
 
             Session session = sessionFactory.getCurrentSession();
             session.beginTransaction();
@@ -70,10 +71,9 @@ public class CrudFunctions {
 
         try{
             sessionFactory = new Configuration()
-                                .configure("hibernate.cfg.xml")
-                                .addAnnotatedClass(Student.class)
-                                .buildSessionFactory();
-
+                    .configure("hibernate.cfg.xml")
+                    .addAnnotatedClass(Student.class)
+                    .buildSessionFactory();
 
             Session session = sessionFactory.getCurrentSession();
             session.beginTransaction();
@@ -99,9 +99,9 @@ public class CrudFunctions {
 
         try{
             sessionFactory = new Configuration()
-                             .configure("hibernate.cfg.xml")
-                             .addAnnotatedClass(Student.class)
-                             .buildSessionFactory();
+                    .configure("hibernate.cfg.xml")
+                    .addAnnotatedClass(Student.class)
+                    .buildSessionFactory();
 
             Session session = sessionFactory.getCurrentSession();
             session.beginTransaction();
@@ -136,7 +136,58 @@ public class CrudFunctions {
 
         }catch (Exception err){
             err.printStackTrace();
+        }finally {
+            if(sessionFactory != null){
+                sessionFactory.close();
+            }
         }
+    }
+
+    public void deleteStudentById(int studentID){
+
+        try{
+            sessionFactory = new Configuration()
+                                 .configure("hibernate.cfg.xml")
+                                 .addAnnotatedClass(Student.class)
+                                 .buildSessionFactory();
+
+            Session session = sessionFactory.getCurrentSession();
+            session.beginTransaction();
+            Student studentToDelete = session.get(Student.class, studentID);
+            session.delete(studentToDelete);
+            session.getTransaction().commit();
+            System.out.println("Student : " +studentToDelete.getFirstName() + " is deleted");
+        }catch (Exception err){
+            err.printStackTrace();
+        }finally {
+            if(sessionFactory != null){
+                sessionFactory.close();
+            }
+        }
+    }
+
+    public void deleteStudent_Method2(int studentId){
+        try{
+            sessionFactory = new Configuration()
+                    .configure("hibernate.cfg.xml")
+                    .addAnnotatedClass(Student.class)
+                    .buildSessionFactory();
+
+            Session session = sessionFactory.getCurrentSession();
+            session.beginTransaction();
+            Query dltQuery = session.createQuery("DELETE from Student WHERE id = :id");
+            dltQuery.setParameter("id", studentId);
+            dltQuery.executeUpdate();
+            session.getTransaction().commit();
+
+        }catch (Exception err){
+            err.printStackTrace();
+        }finally{
+            if(sessionFactory != null){
+                sessionFactory.close();
+            }
+        }
+
     }
 
 }

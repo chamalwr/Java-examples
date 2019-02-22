@@ -52,6 +52,11 @@ public class Main {
 
         /** Update students email by using student id */
         crudFunctions.updateStudent(4, "rimshan@xoom.lk");
+
+
+        /** Delete a student by ID */
+        crudFunctions.deleteStudentById(4);
+        crudFunctions.deleteStudent_Method2(3);
     }
 
 }
