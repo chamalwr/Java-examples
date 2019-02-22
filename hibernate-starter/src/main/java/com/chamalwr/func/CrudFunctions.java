@@ -24,13 +24,43 @@ public class CrudFunctions {
             for (Student student : students){
                 session.save(student);
                 System.out.println("Student : " + student.getFirstName() + " saved successfully");
+                System.out.println("Saved id for " + student.getFirstName() + " is " + student.getId());
             }
             session.getTransaction().commit();
         }catch (Exception err){
            err.printStackTrace();
         }finally {
-
+            if(sessionFactory != null){
+                sessionFactory.close();
+            }
         }
+    }
+
+
+    public Student getStudent(int studentId){
+        try{
+            sessionFactory = new Configuration()
+                                 .configure("hibernate.cfg.xml")
+                                 .addAnnotatedClass(Student.class)
+                                  .buildSessionFactory();
+
+
+            Session session = sessionFactory.getCurrentSession();
+            session.beginTransaction();
+            Student student = session.get(Student.class, studentId);
+            session.getTransaction().commit();
+
+            return student;
+
+        }catch (Exception err){
+            err.printStackTrace();
+        }finally {
+            if(sessionFactory != null){
+                sessionFactory.close();
+            }
+        }
+
+        return null;
     }
 
 }
