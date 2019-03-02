@@ -1,0 +1,9 @@
+Wireless Equivalent Privacy, or WEP as it's commonly referred to, has been around since
+1999 and is an older security standard that was used to secure wireless networks. In 2003,
+WEP was replaced by WPA and later by WPA2. Due to having more secure protocols available,
+WEP encryption is rarely used. As a matter of fact, it is highly recommended that you never
+use WEP encryption to secure your network! There are many known ways to exploit WEP
+encryption and we will explore one of those ways in this recipe.
+In this recipe, we will use the AirCrack suite to crack a WEP key. The AirCrack suite (or AirCrack
+NG as it's commonly referred to) is a WEP and WPA key cracking program that captures
+network packets, analyzes them, and uses this data to crack the WEP key.
